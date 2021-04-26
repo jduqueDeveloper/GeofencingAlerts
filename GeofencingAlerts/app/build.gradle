@@ -15,8 +15,21 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        Properties properties = new Properties()
+        if (rootProject.file("local.properties").exists()) {
+            properties.load(rootProject.file("local.properties").newDataInputStream())
+        }
+
+        // Inject the Maps API key into the manifest
+        manifestPlaceholders = [ mapsApiKey : properties.getProperty("MAPS_API_KEY", "") ]
     }
 
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+    
     buildTypes {
         release {
             minifyEnabled false
@@ -33,6 +46,15 @@ android {
 }
 
 dependencies {
+    //Google Maps Dependencies
+    implementation 'com.google.android.libraries.maps:maps:3.1.0-beta'
+
+    // If you are using Places, add all of the dependencies below
+    implementation group: 'com.google.android.libraries.maps', name: 'maps', version: '3.1.0-beta'
+    implementation 'com.google.android.gms:play-services-gcm:17.0.0'
+    implementation 'com.google.auto.value:auto-value-annotations:1.6.2'
+
+    implementation 'com.google.maps.android:android-maps-utils-v3:1.3.1'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.2.0'
