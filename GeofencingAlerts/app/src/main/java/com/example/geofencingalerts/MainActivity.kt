@@ -54,9 +54,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
     private val GEOFENCE_REQ_ID = "My Geofence"
     private val GEOFENCE_RADIUS = 20.0f // in meters
 
-    private val geoFencePendingIntent: PendingIntent? = null
-    private val GEOFENCE_REQ_CODE = 0
-
     // Draw Geofence circle on GoogleMap
     private var geoFenceLimits: Circle? = null
 
@@ -65,8 +62,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
     lateinit var geofencingClient: GeofencingClient
 
     private lateinit var geofence: Geofence
-    private var geoFenceList: ArrayList<Geofence>? = null
-
+    private var geoFenceList: List<Geofence>? = null
+    // geoFences
+    private val morroputo = GeoFence(LatLng(6.143029, -75.447239), 20.0f, "morroputo")
+    private val estudio = GeoFence(LatLng(6.142839, -75.447151), 3.0f, "estudio")
+    private val iglesia = GeoFence(LatLng(6.144133, -75.447755), 10.0f, "iglesia")
+    private val superMercado = GeoFence(LatLng(6.142618, -75.445971), 100.0f, "mercado")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +75,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
 
         textLat = findViewById(R.id.txt_latitud)
         textLong = findViewById(R.id.txt_longitud)
+
 
         // initialize GoogleMaps
 
@@ -138,7 +140,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             ) {
                 return
             }
-            geoFenceList?.add(geofence)
             geofencingClient.addGeofences(geoFencingRequest, geofencePendingIntent)?.run {
                 addOnSuccessListener {
                     // Geofences added
@@ -148,18 +149,22 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
                 addOnFailureListener {
                     // Failed to add geofences
                     // ...
-                    //drawGeofence()
+
                 }
             }
-/*        } else {
-            Log.e("TAG", "Geofence marker is null")
-        }*/
     }
 
     private fun getGeofencingRequest(): GeofencingRequest {
         return GeofencingRequest.Builder().apply {
             setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
             addGeofence(geofence)
+        }.build()
+    }
+
+    private fun getGeofencingRequest2(): GeofencingRequest {
+        return GeofencingRequest.Builder().apply {
+            setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+            addGeofences(geoFenceList)
         }.build()
     }
 
@@ -176,7 +181,24 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
 
         //geoFenceList?.add(geofence)
     }
+    // Create a Geofence
+    private fun createGeofence2(geoFence: GeoFence) {
+        Log.d("TAG", "createGeofence")
+        geofence = Geofence.Builder()
+            .setRequestId(geoFence._id) // Geofence ID
+            .setCircularRegion(
+                geoFence.latLng!!.latitude,
+                geoFence.latLng.longitude,
+                geoFence.radius!!
+            ) // defining fence region
+            .setExpirationDuration(GEO_DURATION) // expiring date
+            // Transition types that it should look for
+            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
+            .build()
+        geoFenceList = listOf(geofence)
+       // geoFenceList?.add(geofence)
 
+    }
 
     // Start location Updates
     private fun startLocationUpdates() {
@@ -230,14 +252,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
 
     private fun writeLastLocation() {
         writeActualLocation(lastLocation)
-        markerForGeofence(LatLng(6.143029, -75.447239))
-        //startGeofence()
 
 
-/*        // aca se lanza el geofence
-        markerForGeofence(LatLng(6.143002, -75.446432))
-        //Aca empieza geofence
-        startGeofence()*/
+        markerForGeofence2(morroputo)
+        markerForGeofence2(estudio)
+        markerForGeofence2(iglesia)
+        markerForGeofence2(superMercado)
+
     }
 
 
@@ -338,25 +359,64 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         map?.animateCamera(cameraUpdate)
     }
 
-
-
     // Create a marker for the geofence creation
-    private fun markerForGeofence(latLng: LatLng) {
-        Log.i("TAG", "markerForGeofence($latLng)")
-        val title = latLng.latitude.toString() + ", " + latLng.longitude
+    private fun markerForGeofence2(geoFence: GeoFence) {
+        //Log.i("TAG", "markerForGeofence($latLng)")
+        val title = geoFence.latLng?.latitude.toString() + ", " + geoFence.latLng?.longitude.toString()
         // Define marker options
         val markerOptions = MarkerOptions()
-            .position(latLng)
-            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+            .position(geoFence.latLng!!)
+            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
             .title(title)
         if (map != null) {
             // Remove last geoFenceMarker
-            if (geoFenceMarker != null) geoFenceMarker!!.remove()
+            //if (geoFenceMarker != null) geoFenceMarker!!.remove()
             geoFenceMarker = map?.addMarker(markerOptions)
         }
-        startGeofence()
-        //drawGeofence()
-        //createGeofence(LatLng(lastLocation.latitude, lastLocation.longitude),GEOFENCE_RADIUS)
+
+        createGeofence2(geoFence)
+        startGeofenceRequest()
+        drawGeofences(geoFence)
+
+    }
+
+
+    private fun startGeofenceRequest() {
+        val geoFencingRequest = getGeofencingRequest2()
+/*        if (geoFenceMarker != null) {
+            createGeofence(geoFenceMarker!!.position, GEOFENCE_RADIUS)
+            //getGeofencingRequest()*/
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        geofencingClient.addGeofences(geoFencingRequest, geofencePendingIntent)?.run {
+            addOnSuccessListener {
+                // Geofences added
+                // ...
+                // drawGeofence()
+            }
+            addOnFailureListener {
+                // Failed to add geofences
+                // ...
+
+            }
+        }
+    }
+
+    private fun drawGeofences(geoFence:GeoFence) {
+
+        Log.d("TAG", "drawGeofence()")
+        //if (geoFenceLimits != null) geoFenceLimits!!.remove()
+        val circleOptions = CircleOptions()
+            .center(geoFenceMarker!!.position)
+            .strokeColor(Color.argb(50, 70, 70, 70))
+            .fillColor(Color.argb(100, 150, 150, 150))
+            .radius(geoFence.radius!!.toDouble())
+        geoFenceLimits = map!!.addCircle(circleOptions)
     }
 
     private fun drawGeofence() {
