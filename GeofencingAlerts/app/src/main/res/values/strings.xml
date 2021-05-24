@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">GeofencingAlerts</string>
     <string name="button_map">Map</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="addgeoalert">Add GeoFence Alert</string>
+    <string name="view_map">View Map</string>
 </resources>

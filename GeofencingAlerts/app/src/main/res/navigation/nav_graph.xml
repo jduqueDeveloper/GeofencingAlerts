@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/startFragment">
+
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.example.geofencingalerts.StartFragment"
+        android:label="fragment_start"
+        tools:layout="@layout/fragment_start" >
+        <action
+            android:id="@+id/action_startFragment_to_addGeoFenceFragment"
+            app:destination="@id/addGeoFenceFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addGeoFenceFragment"
+        android:name="com.example.geofencingalerts.AddGeoFenceFragment"
+        android:label="fragment_add_geo_fence"
+        tools:layout="@layout/fragment_add_geo_fence" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.geofencingalerts.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
+</navigation>
