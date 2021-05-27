@@ -13,18 +13,10 @@
         <action
             android:id="@+id/action_startFragment_to_addGeoFenceFragment"
             app:destination="@id/addGeoFenceFragment" />
-        <action
-            android:id="@+id/action_startFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
     </fragment>
     <fragment
         android:id="@+id/addGeoFenceFragment"
         android:name="com.example.geofencingalerts.AddGeoFenceFragment"
         android:label="fragment_add_geo_fence"
         tools:layout="@layout/fragment_add_geo_fence" />
-    <fragment
-        android:id="@+id/mapFragment"
-        android:name="com.example.geofencingalerts.MapFragment"
-        android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
 </navigation>

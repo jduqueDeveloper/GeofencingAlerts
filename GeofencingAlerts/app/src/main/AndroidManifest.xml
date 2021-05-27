@@ -21,6 +21,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${mapsApiKey}" />
         <receiver android:name=".GeofenceBroadcastReceiver"/>
+        <activity
+            android:name=".MapActivity"
+            android:screenOrientation="fullSensor"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 
 </manifest>
