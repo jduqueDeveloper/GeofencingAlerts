@@ -44,6 +44,7 @@
                     android:id="@+id/txt_input_edit_text_name"
                     style="@style/style_regular_gray_text_hint_size_12"
                     android:layout_width="match_parent"
+                    android:inputType="text"
                     android:layout_height="wrap_content"
                     />
             </com.google.android.material.textfield.TextInputLayout>
@@ -66,6 +67,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txt_input_edit_text_radius"
                     android:layout_width="match_parent"
+                    android:inputType="text"
                     android:layout_height="wrap_content"
                     style="@style/style_regular_gray_text_hint_size_12" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -118,7 +120,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionSend"
-                        android:inputType="number"
+                        android:inputType="text"
                         android:singleLine="true"
                         android:textAlignment="textStart" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -136,7 +138,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionSend"
-                        android:inputType="number"
+                        android:inputType="text"
                         android:singleLine="true"
                         android:textAlignment="textStart" />
                 </com.google.android.material.textfield.TextInputLayout>
