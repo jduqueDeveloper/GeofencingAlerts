@@ -7,9 +7,11 @@ import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.room.Room
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationListener
@@ -32,6 +34,8 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     private var googleApiClient: GoogleApiClient? = null
     private var map: GoogleMap? = null
 
+    private var listGeofences: MutableList<GeoFence>? = null
+
     val MY_PERMISSIONS_REQUEST_FINE_LOCATION = 101
     private lateinit var lastLocation: Location
     private var locationMarker: Marker? = null
@@ -47,8 +51,25 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
+        getDataBase()
         createGoogleApi()
         initGMaps()
+    }
+
+    private fun getDataBase() {
+        val db = Room.databaseBuilder(
+            this,
+            GeoFenceDataBase::class.java, "database-geoFence"
+        ).allowMainThreadQueries().build()
+
+        //db.geoFenceEntityDao().loadAllGeoFences()
+
+        db.geoFenceEntityDao().loadAllGeoFences().forEach{
+            listGeofences?.add(it)
+        }
+
+        listGeofences
+
     }
 
     override fun onStart() {
