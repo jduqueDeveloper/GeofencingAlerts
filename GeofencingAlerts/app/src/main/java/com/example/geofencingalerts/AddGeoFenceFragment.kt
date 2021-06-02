@@ -38,36 +38,12 @@ class AddGeoFenceFragment : Fragment() {
         ).allowMainThreadQueries().build()
 
         binding.buttonAddGeofenceAlert.setOnClickListener {
-/*            geoFenceListDTO.geoFenceList?.add(
-                GeoFence(
-                    latLng = LatLng(
-                        binding.textInputEditTextLatitud.text.toString().toDouble(),
-                        binding.textInputEditTextLongitud.text.toString().toDouble()
-                    ),
-                    radius = binding.txtInputEditTextRadius.toString().toFloat(),
-                    geoFenceName = binding.txtInputEditTextName.toString()
-                )
-            )
-            geoFenceListDTO.alertList?.add(
-                AlertList(
-                    cellphone = binding.txtInputEditTextMessage.toString(),
-                    message = binding.txtInputEditTextMessage.toString()
-                )
-            )*/
-
-/*            val newGeoFence = GeoFenceEntity(
-                uid =1,
-                lat = binding.textInputEditTextLatitud.text.toString().toDouble(),
-                lng = binding.textInputEditTextLongitud.text.toString().toDouble(),
-                radius = binding.txtInputEditTextRadius.toString().toFloat(),
-                geoFenceName = binding.txtInputEditTextName.toString()
-            )*/
 
             val newGeoFence = GeoFenceEntity(
-                lat = 6.143029,
-                lng = -75.447239,
-                radius = 20.0f,
-                geoFenceName = "morroputo"
+                lat = binding.textInputEditTextLatitud.text.toString().toDouble(),
+                lng = binding.textInputEditTextLongitud.text.toString().toDouble(),
+                radius = binding.txtInputEditTextRadius.text.toString().toFloat(),
+                geoFenceName = binding.txtInputEditTextName.text.toString()
             )
 
             db.geoFenceEntityDao().insertGeoFenceEntity(newGeoFence)

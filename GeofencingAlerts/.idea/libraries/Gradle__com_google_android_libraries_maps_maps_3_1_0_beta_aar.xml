@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.android.libraries.maps:maps:3.1.0-beta@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3e4479f53feba8e27a0ed9c2ed75a268/jetified-maps-3.1.0-beta/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3e4479f53feba8e27a0ed9c2ed75a268/jetified-maps-3.1.0-beta/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3e4479f53feba8e27a0ed9c2ed75a268/jetified-maps-3.1.0-beta/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0b4988776045e0ef9b2941e09b738360/jetified-maps-3.1.0-beta/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0b4988776045e0ef9b2941e09b738360/jetified-maps-3.1.0-beta/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0b4988776045e0ef9b2941e09b738360/jetified-maps-3.1.0-beta/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6649ec742188db77099a414557afd09c/jetified-maps-3.1.0-beta/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6649ec742188db77099a414557afd09c/jetified-maps-3.1.0-beta/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6649ec742188db77099a414557afd09c/jetified-maps-3.1.0-beta/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

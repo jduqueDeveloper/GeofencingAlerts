@@ -2,31 +2,27 @@ package com.example.geofencingalerts
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.PendingIntent
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.room.Room
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.LocationListener
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationServices.FusedLocationApi
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.libraries.maps.CameraUpdateFactory
 import com.google.android.libraries.maps.GoogleMap
 import com.google.android.libraries.maps.OnMapReadyCallback
 import com.google.android.libraries.maps.SupportMapFragment
-import com.google.android.libraries.maps.model.BitmapDescriptorFactory
-import com.google.android.libraries.maps.model.LatLng
-import com.google.android.libraries.maps.model.Marker
-import com.google.android.libraries.maps.model.MarkerOptions
+import com.google.android.libraries.maps.model.*
 
 class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback, LocationListener {
@@ -35,6 +31,12 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     private var map: GoogleMap? = null
 
     private var listGeofences: MutableList<GeoFence>? = null
+    private lateinit var geofence: Geofence
+    private val GEO_DURATION = (60 * 60 * 1000).toLong()
+    lateinit var geofencingClient: GeofencingClient
+    private var geoFenceList: List<Geofence>? = null
+    private var geoFenceLimits: Circle? = null
+
 
     val MY_PERMISSIONS_REQUEST_FINE_LOCATION = 101
     private lateinit var lastLocation: Location
@@ -54,6 +56,14 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         getDataBase()
         createGoogleApi()
         initGMaps()
+        geofencingClient = LocationServices.getGeofencingClient(this)
+    }
+
+    private val geofencePendingIntent: PendingIntent by lazy {
+        val intent = Intent(this, GeofenceBroadcastReceiver::class.java)
+        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
+        // addGeofences() and removeGeofences().
+        PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     private fun getDataBase() {
@@ -62,13 +72,7 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
             GeoFenceDataBase::class.java, "database-geoFence"
         ).allowMainThreadQueries().build()
 
-        //db.geoFenceEntityDao().loadAllGeoFences()
-
-        db.geoFenceEntityDao().loadAllGeoFences().forEach{
-            listGeofences?.add(it)
-        }
-
-        listGeofences
+        listGeofences = db.geoFenceEntityDao().loadAllGeoFences().toMutableList()
 
     }
 
@@ -139,26 +143,7 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     private fun writeLastLocation() {
         writeActualLocation(lastLocation)
 
-/*
-
-        val estudio = GeoFence(LatLng(6.142839, -75.447151), 3.0f, "estudio")
-        val iglesia = GeoFence(LatLng(6.144133, -75.447755), 10.0f, "iglesia")
-        val superMercado = GeoFence(LatLng(6.142618, -75.445971), 100.0f, "mercado")
-        val morroputo = GeoFence(LatLng(6.143029, -75.447239), 20.0f, "morroputo")
-
-        var geoFenceList : MutableList<GeoFence>
-        geoFenceList.add(estudio)
-
-*/
-
-        //markerForGeofences()
-
-
-/*        markerForGeofence2(morroputo)
-        markerForGeofence2(estudio)
-        markerForGeofence2(iglesia)
-        markerForGeofence2(superMercado)*/
-
+        listGeofences?.let { createGeofences(it) }
     }
 
     @SuppressLint("SetTextI18n")
@@ -191,9 +176,6 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         if (locationMarker != null) locationMarker!!.remove()
         locationMarker = map?.addMarker(markerOptions)
 
-/*        val zoom = 17f
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoom)
-        map?.animateCamera(cameraUpdate)*/
     }
 
     // Check for permission to access Location
@@ -204,27 +186,94 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                 == PackageManager.PERMISSION_GRANTED)
     }
 
-/*    // Create a marker for the geofence creation
-    private fun markerForGeofences(geoFences: GeoFences) {
-        //Log.i("TAG", "markerForGeofence($latLng)")
-        val title = geoFence.latLng?.latitude.toString() + ", " + geoFence.latLng?.longitude.toString()
-        // Define marker options
-        val markerOptions = MarkerOptions()
-            .position(geoFence.latLng!!)
-            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-            .title(title)
-        if (map != null) {
-            // Remove last geoFenceMarker
-            //if (geoFenceMarker != null) geoFenceMarker!!.remove()
-            geoFenceMarker = map?.addMarker(markerOptions)
+    // Create a marker for the geofence creation
+    private fun createGeofences(listGeoFences: MutableList<GeoFence>) {
+
+        listGeoFences.forEach {
+            //val title = geoFence.latLng?.latitude.toString() + ", " + geoFence.latLng?.longitude.toString()
+            val title = it.geoFenceName
+            val latLng = LatLng(it.lat!!,it.lng!!)
+
+            // Define marker options
+            val markerOptions = MarkerOptions()
+                .position(latLng!!)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                .title(title)
+            if (map != null) {
+                // Remove last geoFenceMarker
+                //if (geoFenceMarker != null) geoFenceMarker!!.remove()
+                geoFenceMarker = map?.addMarker(markerOptions)
+            }
+
+            createGeofence(it)
+            drawGeofences(it)
         }
 
-*//*        createGeofence2(geoFence)
         startGeofenceRequest()
-        drawGeofences(geoFence)*//*
 
-    }*/
+    }
+    // Create a Geofence
+    private fun createGeofence(geoFence: GeoFence) {
+        Log.d("TAG", "createGeofence")
+        geofence = Geofence.Builder()
+            .setRequestId(geoFence.geoFenceName) // Geofence ID
+            .setCircularRegion(
+                geoFence.lat!!,
+                geoFence.lng!!,
+                geoFence.radius!!
+            ) // defining fence region
+            .setExpirationDuration(GEO_DURATION) // expiring date
+            // Transition types that it should look for
+            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
+            .build()
+        geoFenceList = listOf(geofence)
+        // geoFenceList?.add(geofence)
+    }
 
+    private fun drawGeofences(geoFence:GeoFence) {
+
+        Log.d("TAG", "drawGeofence()")
+        //if (geoFenceLimits != null) geoFenceLimits!!.remove()
+        val circleOptions = CircleOptions()
+            .center(geoFenceMarker!!.position)
+            .strokeColor(Color.argb(50, 70, 70, 70))
+            .fillColor(Color.argb(100, 150, 150, 150))
+            .radius(geoFence.radius!!.toDouble())
+        geoFenceLimits = map!!.addCircle(circleOptions)
+    }
+
+    private fun startGeofenceRequest() {
+        val geoFencingRequest = getGeofencingRequest2()
+/*        if (geoFenceMarker != null) {
+            createGeofence(geoFenceMarker!!.position, GEOFENCE_RADIUS)
+            //getGeofencingRequest()*/
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        geofencingClient.addGeofences(geoFencingRequest, geofencePendingIntent)?.run {
+            addOnSuccessListener {
+                // Geofences added
+                // ...
+                // drawGeofence()
+            }
+            addOnFailureListener {
+                // Failed to add geofences
+                // ...
+
+            }
+        }
+    }
+
+    private fun getGeofencingRequest2(): GeofencingRequest {
+        return GeofencingRequest.Builder().apply {
+            setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+            addGeofences(geoFenceList)
+        }.build()
+    }
 
     override fun onMapReady(p0: GoogleMap?) {
         map=p0

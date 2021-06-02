@@ -7,7 +7,7 @@
     <string name="view_map">View Map</string>
     <string name="create_geo_fence">Create GeoFence</string>
     <string name="name">Name</string>
-    <string name="radius">Radius</string>
+    <string name="radius">Radius in (meters)</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
     <string name="create_alert">Create Alert</string>

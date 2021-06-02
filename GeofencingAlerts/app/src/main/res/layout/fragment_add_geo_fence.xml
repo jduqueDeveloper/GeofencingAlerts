@@ -10,208 +10,209 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="13">
-
-            <TextView
-                style="@style/style_txt_subtittle_size_16"
-                android:id="@+id/txt_view_geofence_create"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/create_geo_fence" />
-
-            <TextView
-                android:id="@+id/txt_view_geofence_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:layout_marginStart="16dp"
-                android:text="@string/name" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txt_input_layout_name"
-                android:theme="@style/style_text_container"
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txt_input_edit_text_name"
-                    style="@style/style_regular_gray_text_hint_size_12"
-                    android:layout_width="match_parent"
-                    android:inputType="text"
-                    android:layout_height="wrap_content"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/txt_view_radius"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:layout_marginStart="16dp"
-                android:text="@string/radius" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txt_input_layout_radius"
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txt_input_edit_text_radius"
-                    android:layout_width="match_parent"
-                    android:inputType="text"
-                    android:layout_height="wrap_content"
-                    style="@style/style_regular_gray_text_hint_size_12" />
-            </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="16dp"
-
-                android:weightSum="2">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="13">
 
                 <TextView
-                    android:id="@+id/txt_view_latitud"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/txt_view_geofence_create"
+                    style="@style/style_txt_subtittle_size_16"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:padding="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
-                    android:text="@string/latitude" />
+                    android:text="@string/create_geo_fence" />
 
                 <TextView
-                    android:id="@+id/txt_view_longitud"
+                    android:id="@+id/txt_view_geofence_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:padding="8dp"
+                    android:text="@string/name" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_input_layout_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:theme="@style/style_text_container">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txt_input_edit_text_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/txt_view_radius"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:padding="8dp"
+                    android:text="@string/radius" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_input_layout_radius"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txt_input_edit_text_radius"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/txt_view_latitud"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:padding="8dp"
+                        android:text="@string/latitude" />
+
+                    <TextView
+                        android:id="@+id/txt_view_longitud"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:padding="8dp"
+                        android:text="@string/longitude" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_input_layout_lat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/text_input_edit_text_latitud"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionSend"
+                            android:inputType="phone"
+                            android:singleLine="true"
+                            android:textAlignment="textStart" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_input_layout_longitud"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/text_input_edit_text_longitud"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionSend"
+                            android:inputType="phone"
+                            android:singleLine="true"
+                            android:textAlignment="textStart" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txt_view_create_alert"
+                    style="@style/style_txt_subtittle_size_16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="8dp"
+                    android:text="@string/create_alert" />
+
+                <TextView
+                    android:id="@+id/txt_view_cellphone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:padding="8dp"
+                    android:text="@string/cellphone" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_input_layout_cellphone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:inputType="phone"
+                        android:id="@+id/txt_input_edit_text_cellphone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/txt_view_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:padding="8dp"
+                    android:text="@string/message" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_input_layout_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:inputType="text"
+                        android:id="@+id/txt_input_edit_text_message"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/button_add_geofence_alert"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
-                    android:text="@string/longitude" />
-            </LinearLayout>
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/add_geofence_alert"
+                    android:textAllCaps="false">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/text_input_layout_lat"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/text_input_edit_text_latitud"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:imeOptions="actionSend"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textAlignment="textStart" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/text_input_layout_longitud"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/text_input_edit_text_longitud"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:imeOptions="actionSend"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textAlignment="textStart" />
-                </com.google.android.material.textfield.TextInputLayout>
+                </Button>
 
             </LinearLayout>
 
-            <TextView
-                style="@style/style_txt_subtittle_size_16"
-                android:id="@+id/txt_view_create_alert"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/create_alert" />
-
-            <TextView
-                android:id="@+id/txt_view_cellphone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:layout_marginStart="16dp"
-                android:text="@string/cellphone" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txt_input_layout_cellphone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txt_input_edit_text_cellphone"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    style="@style/style_regular_gray_text_hint_size_12" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/txt_view_message"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:layout_marginStart="16dp"
-                android:text="@string/message" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txt_input_layout_message"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txt_input_edit_text_message"
-                    android:singleLine="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/style_regular_gray_text_hint_size_12" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/button_add_geofence_alert"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:textAllCaps="false"
-                android:text="@string/add_geofence_alert">
-
-            </Button>
-
-        </LinearLayout>
-
-
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
