@@ -6,12 +6,13 @@ import android.content.Intent
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
+import androidx.room.Room
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofenceStatusCodes
 import com.google.android.gms.location.GeofencingEvent
 
-class GeofenceBroadcastReceiver : BroadcastReceiver() {
-    // ...
+class GeofenceBroadcastReceiver : BroadcastReceiver(){
+    private var listAlerts: MutableList<AlertEntity>? = null
     override fun onReceive(context: Context?, intent: Intent?) {
         val geofencingEvent = GeofencingEvent.fromIntent(intent)
         if (geofencingEvent.hasError()) {
@@ -41,7 +42,7 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
             // Send notification and log the transition details.
             Toast.makeText(context,geofenceTransitionDetails
                 , Toast.LENGTH_SHORT).show()
-            sendNotification(geofenceTransitionDetails)
+            createNotification(geofenceTransitionDetails,context)
             Log.i("TAG", geofenceTransitionDetails)
         } else {
             // Log the error.
@@ -66,9 +67,30 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
         return status + TextUtils.join(", ", triggeringGeofencesList)
     }
 
-    private fun sendNotification(msg: String) {
-        Log.i("TAG", "sendNotification: $msg")
+    private fun createNotification(geofenceTransitionDetails: String, context: Context?) {
+        Log.i("TAG", "sendNotification: $geofenceTransitionDetails")
+        val db = Room.databaseBuilder(
+            context!!,
+            GeoFenceDataBase::class.java, "database-geoFence"
+        ).allowMainThreadQueries().build()
+
+        listAlerts = db.alertEntityDao().loadAllAlertEntitys().toMutableList()
+
+        val alert = listAlerts!!.find { alertEntity ->
+            alertEntity.geoFenceName!!.contains(
+                geofenceTransitionDetails.subSequence(
+                    9,
+                    geofenceTransitionDetails.length
+                )
+            )
+        }
+        val phone = alert!!.CellPhone
+        val message = alert.message
+        var iSendSms = MapActivity()
+
+        iSendSms.sendSms(phone!!,message!!,context)
 
     }
+
 
 }

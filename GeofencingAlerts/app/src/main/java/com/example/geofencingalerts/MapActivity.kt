@@ -1,8 +1,10 @@
 package com.example.geofencingalerts
 
 import android.Manifest
+import android.R
 import android.annotation.SuppressLint
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -10,6 +12,7 @@ import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -23,9 +26,12 @@ import com.google.android.libraries.maps.GoogleMap
 import com.google.android.libraries.maps.OnMapReadyCallback
 import com.google.android.libraries.maps.SupportMapFragment
 import com.google.android.libraries.maps.model.*
+import okhttp3.*
+import java.io.IOException
+
 
 class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
-    GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback, LocationListener {
+    GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback, LocationListener, ISendSms {
 
     private var googleApiClient: GoogleApiClient? = null
     private var map: GoogleMap? = null
@@ -48,6 +54,10 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     // This number in extremely low, and should be used only for debug
     private val UPDATE_INTERVAL = 5000
     private val FASTEST_INTERVAL = 900
+
+    private val MY_PERMISSIONS_REQUEST_SEND_SMS = 0
+
+    private val mClient = OkHttpClient()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -186,7 +196,7 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                 == PackageManager.PERMISSION_GRANTED)
     }
 
-    // Create a marker for the geofence creation
+
     private fun createGeofences(listGeoFences: MutableList<GeoFence>) {
 
         listGeoFences.forEach {
@@ -243,7 +253,7 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     }
 
     private fun startGeofenceRequest() {
-        val geoFencingRequest = getGeofencingRequest2()
+        val geoFencingRequest = getGeofencingRequest()
 /*        if (geoFenceMarker != null) {
             createGeofence(geoFenceMarker!!.position, GEOFENCE_RADIUS)
             //getGeofencingRequest()*/
@@ -256,11 +266,13 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         }
         geofencingClient.addGeofences(geoFencingRequest, geofencePendingIntent)?.run {
             addOnSuccessListener {
+                //Toast.makeText(applicationContext, "se creo la geovalla", Toast.LENGTH_SHORT).show()
                 // Geofences added
                 // ...
                 // drawGeofence()
             }
             addOnFailureListener {
+                Toast.makeText(applicationContext, " No se creo la geovalla", Toast.LENGTH_SHORT).show()
                 // Failed to add geofences
                 // ...
 
@@ -268,7 +280,7 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         }
     }
 
-    private fun getGeofencingRequest2(): GeofencingRequest {
+    private fun getGeofencingRequest(): GeofencingRequest {
         return GeofencingRequest.Builder().apply {
             setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
             addGeofences(geoFenceList)
@@ -298,5 +310,62 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         Log.d("TAG", "onLocationChanged [$p0]")
         lastLocation = p0!!
         writeActualLocation(p0)
+    }
+    @Throws(IOException::class)
+    fun post(url: String?, callback: Callback?): Call? {
+        val formBody: RequestBody = FormBody.Builder()
+            .add("To", "+573192320713")
+            .add("Body", "holaijuepuerca")
+            .build()
+        val request: Request = Request.Builder()
+            .url("")
+            .post(formBody)
+            .build()
+        val response: Call = mClient.newCall(request)
+        response.enqueue(callback!!)
+        return response
+    }
+
+
+    override fun sendSms(cellPhone: String, message: String,context: Context) {
+        val number = "+57$cellPhone"
+        val messageS = message
+        //Toast.makeText(applicationContext,message, Toast.LENGTH_SHORT).show()
+
+        post("https://twiliioapi.herokuapp.com/", object : Callback {
+
+            override fun onFailure(call: Call, e: IOException) {
+                Toast.makeText(context, ",fallo el envio del mensaje", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                Toast.makeText(context, ",envio exitoso", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+
+/*        val accountSid = "ACe407d462f796be749d9acd3dc7660d3c"
+        val authToken = "14c0601ec2c6e1a5b5731a16129e9199"
+
+
+        val twilio = Twilio.create(
+            context,
+            accountSid,
+            authToken
+        )
+
+        val messageTwilio = TwilioMessage.create("+57$cellPhone","+17176961470" ,message,null)
+        twilio.send(messageTwilio)*/
+
+/*
+        Twilio.init(accountSid, authToken)
+
+        val messageTwilio: Message = Message.creator(
+            PhoneNumber("+57$cellPhone"),  // To number
+            PhoneNumber("+17176961470"),  // From number
+            message // SMS body
+        ).create()
+
+        System.out.println(messageTwilio.getSid())*/
     }
 }

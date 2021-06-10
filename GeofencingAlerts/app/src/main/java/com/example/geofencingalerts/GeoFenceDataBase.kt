@@ -6,9 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = arrayOf(GeoFenceEntity::class),version = 1)
+@Database(entities = arrayOf(GeoFenceEntity::class, AlertEntity::class),version = 1)
 abstract class GeoFenceDataBase :RoomDatabase() {
     abstract fun geoFenceEntityDao(): GeoFenceEntityDao
+    abstract fun alertEntityDao(): AlertEntityDAO
 
     companion object {
         // Singleton prevents multiple instances of database opening at the

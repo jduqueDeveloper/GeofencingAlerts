@@ -47,6 +47,12 @@ android {
 }
 
 dependencies {
+    implementation 'com.squareup.okhttp3:okhttp:4.4.0'
+    //implementation 'com.github.hihi-dev:twiliosms:0.1.1'
+    //implementation "com.twilio.sdk:twilio:8.14.0"
+/*    implementation "com.twilio:sync-android:1.0.2"
+    implementation group: "com.twilio.sdk", name: "twilio", version: "8.14.0"*/
+
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // Typeconverter latitud longitud
     implementation("com.squareup.moshi:moshi-kotlin:1.9.2")

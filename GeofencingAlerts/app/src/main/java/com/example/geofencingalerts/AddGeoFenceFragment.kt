@@ -15,8 +15,6 @@ import com.google.android.libraries.maps.model.LatLng
 class AddGeoFenceFragment : Fragment() {
 
     private lateinit var binding: FragmentAddGeoFenceBinding
-    private lateinit var geoFenceListDTO: GeoFenceListDTO
-    private lateinit var geoFence: GeoFence
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +46,15 @@ class AddGeoFenceFragment : Fragment() {
 
             db.geoFenceEntityDao().insertGeoFenceEntity(newGeoFence)
 
+            val newAlertEntity = AlertEntity(
+                geoFenceName = binding.txtInputEditTextName.text.toString(),
+                message = binding.txtInputEditTextMessage.text.toString(),
+                CellPhone = binding.txtInputEditTextCellphone.text.toString()
+            )
+
+            db.alertEntityDao().insertAlertEntity(newAlertEntity)
+            val intent = Intent(requireActivity(),MapActivity::class.java)
+            startActivity(intent)
         }
     }
 }
