@@ -7,6 +7,8 @@ import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import androidx.room.Room
+import com.example.geofencingalerts.Entities.AlertEntity
+import com.example.geofencingalerts.database.GeoFenceDataBase
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofenceStatusCodes
 import com.google.android.gms.location.GeofencingEvent

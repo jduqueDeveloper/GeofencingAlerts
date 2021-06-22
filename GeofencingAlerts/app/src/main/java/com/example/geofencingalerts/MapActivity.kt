@@ -1,7 +1,6 @@
 package com.example.geofencingalerts
 
 import android.Manifest
-import android.R
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
@@ -17,6 +16,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.room.Room
+import com.example.geofencingalerts.Entities.GeoFence
+import com.example.geofencingalerts.database.GeoFenceDataBase
+import com.example.geofencingalerts.interfaces.ISendSms
+import com.example.geofencingalerts.service.IApiSmsRestService
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
@@ -26,8 +29,12 @@ import com.google.android.libraries.maps.GoogleMap
 import com.google.android.libraries.maps.OnMapReadyCallback
 import com.google.android.libraries.maps.SupportMapFragment
 import com.google.android.libraries.maps.model.*
-import okhttp3.*
-import java.io.IOException
+import com.google.gson.GsonBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
@@ -55,9 +62,6 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     private val UPDATE_INTERVAL = 5000
     private val FASTEST_INTERVAL = 900
 
-    private val MY_PERMISSIONS_REQUEST_SEND_SMS = 0
-
-    private val mClient = OkHttpClient()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +71,7 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         createGoogleApi()
         initGMaps()
         geofencingClient = LocationServices.getGeofencingClient(this)
+
     }
 
     private val geofencePendingIntent: PendingIntent by lazy {
@@ -240,7 +245,7 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         // geoFenceList?.add(geofence)
     }
 
-    private fun drawGeofences(geoFence:GeoFence) {
+    private fun drawGeofences(geoFence: GeoFence) {
 
         Log.d("TAG", "drawGeofence()")
         //if (geoFenceLimits != null) geoFenceLimits!!.remove()
@@ -311,61 +316,34 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         lastLocation = p0!!
         writeActualLocation(p0)
     }
-    @Throws(IOException::class)
-    fun post(url: String?, callback: Callback?): Call? {
-        val formBody: RequestBody = FormBody.Builder()
-            .add("To", "+573192320713")
-            .add("Body", "holaijuepuerca")
-            .build()
-        val request: Request = Request.Builder()
-            .url("")
-            .post(formBody)
-            .build()
-        val response: Call = mClient.newCall(request)
-        response.enqueue(callback!!)
-        return response
+
+    override fun sendSms(cellPhone: String, message: String, context: Context) {
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = getRetrofit().create(IApiSmsRestService::class.java).postSms(
+                Body = message,
+                From = "MG64ec7a79a9c635d44093679b51070d85",
+                To = cellPhone
+            )
+            runOnUiThread {
+                if (response.isSuccessful) {
+                    Toast.makeText(context, "se ha enviado el mensaje", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "No se pudo enviar el mensaje", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
     }
 
-
-    override fun sendSms(cellPhone: String, message: String,context: Context) {
-        val number = "+57$cellPhone"
-        val messageS = message
-        //Toast.makeText(applicationContext,message, Toast.LENGTH_SHORT).show()
-
-        post("https://twiliioapi.herokuapp.com/", object : Callback {
-
-            override fun onFailure(call: Call, e: IOException) {
-                Toast.makeText(context, ",fallo el envio del mensaje", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                Toast.makeText(context, ",envio exitoso", Toast.LENGTH_SHORT).show()
-            }
-        })
-
-
-/*        val accountSid = "ACe407d462f796be749d9acd3dc7660d3c"
-        val authToken = "14c0601ec2c6e1a5b5731a16129e9199"
-
-
-        val twilio = Twilio.create(
-            context,
-            accountSid,
-            authToken
-        )
-
-        val messageTwilio = TwilioMessage.create("+57$cellPhone","+17176961470" ,message,null)
-        twilio.send(messageTwilio)*/
-
-/*
-        Twilio.init(accountSid, authToken)
-
-        val messageTwilio: Message = Message.creator(
-            PhoneNumber("+57$cellPhone"),  // To number
-            PhoneNumber("+17176961470"),  // From number
-            message // SMS body
-        ).create()
-
-        System.out.println(messageTwilio.getSid())*/
+    private fun getRetrofit(): Retrofit {
+        val gson = GsonBuilder()
+            .setLenient()
+            .create()
+        return Retrofit.Builder()
+            .baseUrl("https://c14d2a2a6629.ngrok.io/")
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
     }
+
 }

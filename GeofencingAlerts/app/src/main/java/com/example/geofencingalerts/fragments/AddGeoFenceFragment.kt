@@ -1,4 +1,4 @@
-package com.example.geofencingalerts
+package com.example.geofencingalerts.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,11 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import androidx.room.Room
+import com.example.geofencingalerts.Entities.AlertEntity
+import com.example.geofencingalerts.Entities.GeoFenceEntity
+import com.example.geofencingalerts.MapActivity
+import com.example.geofencingalerts.database.GeoFenceDataBase
 import com.example.geofencingalerts.databinding.FragmentAddGeoFenceBinding
-import com.example.geofencingalerts.databinding.FragmentStartBinding
-import com.google.android.libraries.maps.model.LatLng
 
 class AddGeoFenceFragment : Fragment() {
 
@@ -53,7 +54,7 @@ class AddGeoFenceFragment : Fragment() {
             )
 
             db.alertEntityDao().insertAlertEntity(newAlertEntity)
-            val intent = Intent(requireActivity(),MapActivity::class.java)
+            val intent = Intent(requireActivity(), MapActivity::class.java)
             startActivity(intent)
         }
     }

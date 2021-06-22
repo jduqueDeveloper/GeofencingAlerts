@@ -1,4 +1,4 @@
-package com.example.geofencingalerts
+package com.example.geofencingalerts.Entities
 
 import com.google.android.libraries.maps.model.LatLng
 

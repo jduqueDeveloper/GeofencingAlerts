@@ -1,10 +1,13 @@
-package com.example.geofencingalerts
+package com.example.geofencingalerts.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import com.example.geofencingalerts.Entities.AlertEntity
+import com.example.geofencingalerts.Entities.GeoFenceEntity
+import com.example.geofencingalerts.dao.GeoFenceEntityDao
+import com.example.geofencingalerts.dao.AlertEntityDAO
 
 @Database(entities = arrayOf(GeoFenceEntity::class, AlertEntity::class),version = 1)
 abstract class GeoFenceDataBase :RoomDatabase() {

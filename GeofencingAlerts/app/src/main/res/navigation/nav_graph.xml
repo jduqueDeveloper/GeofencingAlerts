@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.example.geofencingalerts.StartFragment"
+        android:name="com.example.geofencingalerts.fragments.StartFragment"
         android:label="fragment_start"
         tools:layout="@layout/fragment_start" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/addGeoFenceFragment"
-        android:name="com.example.geofencingalerts.AddGeoFenceFragment"
+        android:name="com.example.geofencingalerts.fragments.AddGeoFenceFragment"
         android:label="fragment_add_geo_fence"
         tools:layout="@layout/fragment_add_geo_fence" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.geofencingalerts
+package com.example.geofencingalerts.Entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

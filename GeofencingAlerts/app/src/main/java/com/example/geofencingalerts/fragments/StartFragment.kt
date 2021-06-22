@@ -1,4 +1,4 @@
-package com.example.geofencingalerts
+package com.example.geofencingalerts.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,9 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.DataBindingUtil.inflate
 import androidx.navigation.fragment.findNavController
+import com.example.geofencingalerts.MapActivity
+import com.example.geofencingalerts.R
 import com.example.geofencingalerts.databinding.FragmentStartBinding
 
 class StartFragment : Fragment() {
@@ -35,7 +35,7 @@ class StartFragment : Fragment() {
 
         binding.buttonViewMap.setOnClickListener {
            // findNavController().navigate(R.id.mapFragment)
-            val intent = Intent(requireActivity(),MapActivity::class.java)
+            val intent = Intent(requireActivity(), MapActivity::class.java)
             startActivity(intent)
         }
     }

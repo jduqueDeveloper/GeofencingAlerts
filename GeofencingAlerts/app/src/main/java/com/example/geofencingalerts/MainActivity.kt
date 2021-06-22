@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.room.Room
+import com.example.geofencingalerts.R
 
 
 class MainActivity : AppCompatActivity() {

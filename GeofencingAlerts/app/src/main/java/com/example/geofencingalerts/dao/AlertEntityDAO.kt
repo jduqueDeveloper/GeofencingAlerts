@@ -1,9 +1,10 @@
-package com.example.geofencingalerts
+package com.example.geofencingalerts.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.geofencingalerts.Entities.AlertEntity
 
 @Dao
 interface AlertEntityDAO {

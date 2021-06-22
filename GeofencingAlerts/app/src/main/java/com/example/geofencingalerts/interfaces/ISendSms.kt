@@ -1,4 +1,4 @@
-package com.example.geofencingalerts
+package com.example.geofencingalerts.interfaces
 
 import android.content.Context
 

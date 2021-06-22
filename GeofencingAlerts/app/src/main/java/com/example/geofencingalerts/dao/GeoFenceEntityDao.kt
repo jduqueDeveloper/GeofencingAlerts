@@ -1,6 +1,8 @@
-package com.example.geofencingalerts
+package com.example.geofencingalerts.dao
 
 import androidx.room.*
+import com.example.geofencingalerts.Entities.GeoFenceEntity
+import com.example.geofencingalerts.Entities.GeoFence
 
 @Dao
 interface GeoFenceEntityDao {
