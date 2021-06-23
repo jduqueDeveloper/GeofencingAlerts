@@ -6,31 +6,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.StartFragment">
 
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/mapvector"
+        android:layout_marginTop="50dp"
+
+
+    />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_marginTop="400dp"
         >
 
         <Button
             android:id="@+id/buttonViewMap"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="210dp"
+            android:layout_height="60dp"
             android:text="@string/view_map"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:textAllCaps="false"
             />
 
         <Button
             android:id="@+id/buttonAddGeoAlert"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="210dp"
+            android:layout_height="60dp"
             android:text="@string/addgeoalert"
             app:layout_constraintTop_toBottomOf="@id/buttonViewMap"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:textAllCaps="false"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
