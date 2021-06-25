@@ -7,4 +7,15 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="business_yellow_FF8800">#FF8800</color>
+    <color name="yellow_business_F1CC30">#F1CC30</color>
+    <color name="blue_business_213B8C">#213B8C </color>
+    <color name="blue_business_527ab5">#527ab5</color>
+    <color name="blue_business_003891">#003891</color>
+    <color name="blue_business_00389150">#80003891</color>
+    <color name="green_business_chat_F9F9F9">#92C01F</color>
+    <color name="blue_business_2980CE">#2980CE</color>
+    <color name="blue_business_234699">#234699</color>
+    <color name="red_business_FF0000">#FF0000</color>
+    <color name="red_business_8F5050">#8F5050</color>
 </resources>

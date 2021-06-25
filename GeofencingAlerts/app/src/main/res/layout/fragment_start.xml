@@ -7,19 +7,26 @@
     tools:context=".fragments.StartFragment">
 
 
-    <ImageView
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@drawable/mapvector"
-        android:layout_marginTop="50dp"
+        android:layout_height="wrap_content"
+        android:text="@string/world_geofence_alert"
+        android:layout_marginTop="32dp"
+        style="@style/style_txt_subtittle_size_24"
+        />
 
 
-    />
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/mapvector" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="330dp"
         >
 
         <Button

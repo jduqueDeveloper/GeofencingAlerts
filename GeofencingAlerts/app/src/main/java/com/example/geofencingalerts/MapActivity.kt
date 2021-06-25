@@ -341,7 +341,7 @@ class MapActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
             .setLenient()
             .create()
         return Retrofit.Builder()
-            .baseUrl("https://c14d2a2a6629.ngrok.io/")
+            .baseUrl("https://91c40e77dfab.ngrok.io/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }

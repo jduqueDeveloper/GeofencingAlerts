@@ -14,4 +14,5 @@
     <string name="cellphone">Cellphone</string>
     <string name="message">Message</string>
     <string name="add_geofence_alert">ADD Geofence Alert</string>
+    <string name="world_geofence_alert">World geofence alert</string>
 </resources>
